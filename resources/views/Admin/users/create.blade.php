@@ -34,6 +34,12 @@
                 <div class="form-group">
                        {!! Form::label('password','Password:') !!}
                        {!! Form::password('password',['class'=>'form-control']) !!}
+
+
+                    {{--<div class="alert alert-danger">--}}
+                    {{--{{$errors->first('password')}}--}}
+                    {{--</div>--}}
+
                 </div>
 
               <div class="form-group">

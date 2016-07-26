@@ -21,14 +21,29 @@ class UsersRequest extends Request
      *
      * @return array
      */
+
+    //unique:table name,column name in DB.
     public function rules()
     {
         return [
             'name'=>'required',
             'email'=>'required',
+//            'email'=>'required|unique:users,email',
             'role_id'=>'required',
             'is_active'=>'required',
             'password'=>'required'
+//            'password'=>'required|min:6'
         ];
     }
+
+//    public function messages()
+//    {
+//        return [
+//            'email.required' => 'Please enter your email!',
+//            'email.unique' => 'Please enter another email ,Boy!!!',
+//            'password.required'  => 'please enter your password!',
+//            'password.min'  => 'your password is very short!!',
+//        ];
+//    }
+
 }
