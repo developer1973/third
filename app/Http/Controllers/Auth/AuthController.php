@@ -69,4 +69,13 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+//    protected function authenticated($request, $user)
+//    {
+//
+//        if($user->role->name === 'administrator' && $user->is_active===1) {
+//            return redirect()->intended('/admin');
+//        }
+//
+//        return redirect()->intended('/');
+//    }
 }

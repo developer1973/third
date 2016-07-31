@@ -54,7 +54,11 @@
             <!-- /.dropdown -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    <i class="fa fa-user fa-fw"></i>
+                    @if(Auth::user())
+                    {{ Auth::user()->name }}
+                    @endif
+                    <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
                     <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
@@ -68,7 +72,15 @@
                 <!-- /.dropdown-user -->
             </li>
             <!-- /.dropdown -->
+            {{--<li class="dropdown">--}}
+                {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">--}}
+                    {{--{{ Auth::user()->name }} <span class="caret"></span>--}}
+                {{--</a>--}}
 
+                {{--<ul class="dropdown-menu" role="menu">--}}
+                    {{--<li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>--}}
+                {{--</ul>--}}
+            {{--</li>--}}
 
         </ul>
 
@@ -122,12 +134,20 @@
                     <li>
                         <a href="#"><i class="fa fa-wrench fa-fw"></i>Users<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
+                            {{--@if (Auth::user()->isAdmin())--}}
                             <li>
                                 <a href="{{route('admin.users.index')}}">All Users</a>
+                                {{--<a href="/admin/users">All Users</a>--}}
+                            </li>
+                            {{--@endif--}}
+                            <li>
+                                <a href="{{route('admin.users.create')}}">Create User</a>
+                                {{--<a href="/admin/users/create">Create User</a>--}}
                             </li>
 
                             <li>
-                                <a href="{{route('admin.users.create')}}">Create User</a>
+                                <a href="/fun">Test Page</a>
+                                {{--<a href="/admin/users/create">Create User</a>--}}
                             </li>
 
                         </ul>
@@ -138,11 +158,11 @@
                         <a href="#"><i class="fa fa-wrench fa-fw"></i> Posts<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/posts">All Posts</a>
+                                <a href="{{route('admin.posts.index')}}">All Posts</a>
                             </li>
 
                             <li>
-                                <a href="/posts/create">Create Post</a>
+                                <a href="{{route('admin.posts.create')}}">Create Post</a>
                             </li>
 
                         </ul>
