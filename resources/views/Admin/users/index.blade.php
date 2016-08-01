@@ -32,6 +32,7 @@
                         {{--<td><img height="50" src="{{$user->photo?$user->photo->file:'No user photo'}}" alt=""></td>--}}
                         {{--@if (Auth::user()->isAdmin())--}}
                           <td>  <a href="{{route('admin.users.edit',$user->id)}}">{{$user->name}}</a></td>
+                        {{--<td>  <a href="{{$user->role->name!='administrator'?route('admin.users.edit',$user->id):route('admin.john.edit',$user->id)}}">{{$user->name}}</a></td>--}}
                           {{--<td>  <a href="{{url('/admin/users',$user->id).'/edit'}}">{{$user->name}}</a></td>--}}
 
                         {{--<td>  <a href="{{\Illuminate\Support\Facades\URL::to('admin/users/'.$user->id.'/edit')}}">{{$user->name}}</a></td>--}}

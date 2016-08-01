@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Http\Requests\PostsCreateRequest;
 use App\Photo;
 use App\Post;
@@ -31,7 +32,9 @@ class AdminPostsController extends Controller
      */
     public function create()
     {
-        return view('Admin.posts.create');
+        $category=Category::lists('name','id')->all();
+        
+        return view('Admin.posts.create',compact('category'));
     }
 
     /**
@@ -53,8 +56,8 @@ class AdminPostsController extends Controller
             $input['photo_id']=$photo->id;
         }
 //        $input['password']=bcrypt($request->password);
-          $user->posts()->create($input);
-        return redirect('/admin/posts');
+          $user->posts1()->create($input);
+          return redirect('/admin/posts');
     }
 
     /**
