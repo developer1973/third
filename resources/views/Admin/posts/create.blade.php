@@ -25,6 +25,9 @@
                 <div class="form-group">
                     {!! Form::label('body','Description:') !!}
                     {!! Form::textarea('body',null,['class'=>'form-control']) !!}
+                    <script>
+                        CKEDITOR.replace( 'body' );
+                    </script>
                 </div>
 
                <div class="form-group">

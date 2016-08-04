@@ -2,7 +2,19 @@
 <html lang="en">
 
 <head>
+    {{--<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>--}}
+    {{--<script>tinymce.init({ selector:'textarea' });</script>--}}
+    <script src="//cdn.ckeditor.com/4.5.10/full/ckeditor.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js">
+    </script>
+    <script>
+        $(document).ready(function(){
+            $(".confirm_delete").click(function(){
+                return confirm("Are you sure you want to delete this item!!");
 
+            });
+        });
+    </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -174,11 +186,11 @@
                         <a href="#"><i class="fa fa-wrench fa-fw"></i>Categories<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/categories">All Categories</a>
+                                <a href="{{route('admin.categories.index')}}">All Categories</a>
                             </li>
 
                             <li>
-                                <a href="/categories/create">Create Category</a>
+                                <a href="{{route('admin.categories.create')}}">Create Category</a>
                             </li>
 
                         </ul>

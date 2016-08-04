@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AdminPostsController extends Controller
 {
@@ -79,7 +80,10 @@ class AdminPostsController extends Controller
      */
     public function edit($id)
     {
-        return view('Admin.posts.edit');
+        $post=Post::findOrFail($id);
+        $categories=Category::lists('name','id')->all();
+        return view('Admin.posts.edit',compact('post','categories'));
+        
     }
 
     /**
@@ -91,7 +95,17 @@ class AdminPostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $input=$request->all();
+       // $post=Post::findOrFail($id);
+        if($file=$request->file('photo_id')){
+            $name=time().$file->getClientOriginalName();
+            $file->move('images',$name);
+            $photo=Photo::create(['file'=>$name]);//
+            $input['photo_id']=$photo->id;
+        }
+        //$post->update($input);
+        Auth::user()->posts1()->whereId($id)->first()->update($input);
+        return redirect('/admin/posts');
     }
 
     /**
@@ -102,6 +116,18 @@ class AdminPostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post= Post::findOrFail($id);
+
+        if($post->photo){
+            unlink(public_path().$post->photo->file);
+            $y=$post->photo->file;
+            //to delete /images/ is 8 character
+            $value = substr("$y",8);
+            Photo::where('file',$value)->delete();
+        }
+
+        $post->delete();
+        Session::flash('any_name','The post has been deleted');
+        return redirect('/admin/posts');
     }
 }
