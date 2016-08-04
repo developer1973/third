@@ -6,7 +6,7 @@
     <h1>Categories</h1>
 
     <div class="col-sm-6">
-        {!! Form::model($category,['method'=>'POST','action'=>'AdminCategoriesController@update',$category->id]) !!}
+        {!! Form::model($category,['method'=>'PATCH','action'=>['AdminCategoriesController@update',$category->id]]) !!}
 
         <div class="form-group">
             {!! Form::label('name','Name:') !!}
@@ -14,15 +14,17 @@
         </div>
 
         <div class="form-group">
-            {!! Form::submit('Update category',['class'=>'btn btn-primary']) !!}
+            {!! Form::submit('Update category',['class'=>'btn btn-primary col-sm-6']) !!}
         </div>
 
 
         {!! Form::close() !!}
-
+        {!! Form::open(['method'=>'delete','action'=>['AdminCategoriesController@destroy',$category->id]]) !!}
+        <div class="form-group">
+            {!! Form::submit('Delete category',['class'=>'btn btn-danger col-sm-6']) !!}
+        </div>
+        {!! Form::close() !!}
 
     </div>
-    <div class="col-sm-6">
 
-    </div>
 @stop
