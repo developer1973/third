@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
+use App\Comment;
+use App\CommentReply;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
-class AdminCategoriesController extends Controller
+class CommentRepliesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +18,8 @@ class AdminCategoriesController extends Controller
      */
     public function index()
     {
-        $categories=Category::all();
-        return view('Admin.categories.index',compact('categories'));
+        $replies=CommentReply::all();
+        return view('Admin.comments.replies.index',compact('replies'));
     }
 
     /**
@@ -27,7 +29,7 @@ class AdminCategoriesController extends Controller
      */
     public function create()
     {
-        return view('Admin.categories.create');
+        //
     }
 
     /**
@@ -38,8 +40,22 @@ class AdminCategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        Category::create($request->all());
-       return redirect('/admin/categories');
+        //
+    }
+
+    public function createReply(Request $request){
+        $user=Auth::user();
+
+        $data=[
+            'comment_id'=>$request->comment_id,
+            'author'=>$user->name,
+            'email'=>$user->email,
+            'photo'=>$user->photo->file,
+            'body'=>$request->body
+        ];
+        CommentReply::create($data);
+        $request->session()->flash('reply_message','Your reply has been submitted and is waiting moderation');
+        return redirect()->back();
     }
 
     /**
@@ -50,7 +66,10 @@ class AdminCategoriesController extends Controller
      */
     public function show($id)
     {
-        //
+        $comment=Comment::findOrFail($id);
+        $replies=$comment->replies;
+        return view('Admin.comments.replies.show',compact('replies'));
+//          return view('admin.comment.replies.show',compact('replies'));
     }
 
     /**
@@ -61,8 +80,7 @@ class AdminCategoriesController extends Controller
      */
     public function edit($id)
     {
-        $category=Category::findOrFail($id);
-        return view('Admin.categories.edit',compact('category'));
+        //
     }
 
     /**
@@ -74,10 +92,8 @@ class AdminCategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $input=$request->all();
-        $category=Category::findOrFail($id);
-        $category->update($input);
-        return redirect('/admin/categories');
+        CommentReply::findOrFail($id)->update($request->all());
+        return redirect()->back();
     }
 
     /**
@@ -88,24 +104,18 @@ class AdminCategoriesController extends Controller
      */
     public function destroy($id)
     {
-        Category::findOrFail($id)->delete();
-        return redirect('/admin/categories');
+        CommentReply::findOrFail($id)->delete();
+        return redirect()->back();
+
+    }
+
+    public function show_comment($id)
+    {
+        $reply=CommentReply::findOrFail($id);
+        $comment=$reply->comment;
+        return view('Admin.comments.replies.showcomment',compact('comment'));
+// return"good nice";
     }
 
 
-    public function category_all(){
-        $categories=Category::all();
-        return view('homepost',compact('categories'));
-    }
-    public function category_author($id){
-        
-            $category=Category::findOrFail($id);
-            $posts=$category->posts2;
-//        return view('Admin.comments.postsauthor',compact('posts'));
-//        return"Fox is very bad";
-            return view('homecategory',compact('posts'));
-
-
-      
-    }
 }

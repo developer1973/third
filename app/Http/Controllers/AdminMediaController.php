@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
+use App\Photo;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class AdminCategoriesController extends Controller
+class AdminMediaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,8 @@ class AdminCategoriesController extends Controller
      */
     public function index()
     {
-        $categories=Category::all();
-        return view('Admin.categories.index',compact('categories'));
+        $photos=Photo::all();
+        return view('Admin.media.index',compact('photos'));
     }
 
     /**
@@ -27,7 +27,7 @@ class AdminCategoriesController extends Controller
      */
     public function create()
     {
-        return view('Admin.categories.create');
+        return view('Admin.media.upload');
     }
 
     /**
@@ -38,8 +38,11 @@ class AdminCategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        Category::create($request->all());
-       return redirect('/admin/categories');
+        $file=$request->file('file');
+        $name=time().$file->getClientOriginalName();
+        $file->move('images',$name);
+        Photo::create(['file'=>$name]);
+
     }
 
     /**
@@ -50,7 +53,7 @@ class AdminCategoriesController extends Controller
      */
     public function show($id)
     {
-        //
+     
     }
 
     /**
@@ -61,8 +64,7 @@ class AdminCategoriesController extends Controller
      */
     public function edit($id)
     {
-        $category=Category::findOrFail($id);
-        return view('Admin.categories.edit',compact('category'));
+        //
     }
 
     /**
@@ -74,10 +76,7 @@ class AdminCategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $input=$request->all();
-        $category=Category::findOrFail($id);
-        $category->update($input);
-        return redirect('/admin/categories');
+        //
     }
 
     /**
@@ -88,24 +87,9 @@ class AdminCategoriesController extends Controller
      */
     public function destroy($id)
     {
-        Category::findOrFail($id)->delete();
-        return redirect('/admin/categories');
-    }
-
-
-    public function category_all(){
-        $categories=Category::all();
-        return view('homepost',compact('categories'));
-    }
-    public function category_author($id){
-        
-            $category=Category::findOrFail($id);
-            $posts=$category->posts2;
-//        return view('Admin.comments.postsauthor',compact('posts'));
-//        return"Fox is very bad";
-            return view('homecategory',compact('posts'));
-
-
-      
+        $photo=Photo::findOrFail($id);
+        unlink(public_path().$photo->file);
+        $photo->delete();
+        return redirect('/admin/media');
     }
 }
